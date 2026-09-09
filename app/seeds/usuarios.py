@@ -7,7 +7,8 @@ def run():
             username="admin",
             email="admin@example.com",
             password="admin123",
-            rol="ADMIN"
+            rol="ADMIN",
+            ci="12345678"
         )
         print("✅ Usuario admin creado")
     else:
