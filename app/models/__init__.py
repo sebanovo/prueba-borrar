@@ -1,2 +1,3 @@
 from .usuario import *
-from .residencia import *
+from .apartamento import *
+from .residencia import Residencia

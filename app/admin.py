@@ -1,16 +1,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from app.models.usuario import Usuario
-from app.models.residencia import Apartamento, Residente  # si ya creaste estos modelos
 from app.forms import UsuarioCreationForm, UsuarioChangeForm
+from app.models import Apartamento, Residencia
 
 # Inline para ver estancias (historial de ocupación) en el detalle del Usuario:
-class ResidenteInline(admin.TabularInline):
-    model = Residente
-    extra = 0
-    autocomplete_fields = ("apartamento",)
-    readonly_fields = ("fecha_ingreso", "fecha_salida")
-    can_delete = False
 
 @admin.register(Usuario)
 class UsuarioAdmin(UserAdmin):
@@ -52,28 +46,16 @@ class UsuarioAdmin(UserAdmin):
         }),
     )
 
-    # Inline para ver estancias del usuario (si ya tienes Residente)
-    inlines = [ResidenteInline]
+    readonly_fields = ("last_login", "date_joined")
+ 
 
-
-# Admin para Apartamento y Residente (opcional pero útil)
 @admin.register(Apartamento)
 class ApartamentoAdmin(admin.ModelAdmin):
-    list_display = ("codigo", "bloque", "piso", "activo")
-    search_fields = ("codigo", "bloque")
-    list_filter = ("activo",)
-    ordering = ("codigo",)
+    list_display = ('id', 'numero', 'estado')
+    search_fields = ('numero',)
 
-class ResidenteUsuarioInline(admin.TabularInline):
-    model = Residente
-    extra = 0
-    autocomplete_fields = ("usuario",)
-    readonly_fields = ("fecha_ingreso", "fecha_salida")
-    can_delete = False
-
-@admin.register(Residente)
-class ResidenteAdmin(admin.ModelAdmin):
-    list_display = ("usuario", "apartamento", "fecha_ingreso", "fecha_salida")
-    list_filter = ("apartamento", "fecha_salida")
-    search_fields = ("usuario__email", "usuario__ci", "apartamento__codigo")
-    autocomplete_fields = ("usuario", "apartamento")
+@admin.register(Residencia)
+class ResidenciaAdmin(admin.ModelAdmin):
+    list_display = ('id', 'usuario', 'apartamento', 'fecha_inicio', 'fecha_fin', 'created_at')
+    list_filter = ('fecha_fin',)
+    search_fields = ('usuario__email', 'apartamento__numero')
