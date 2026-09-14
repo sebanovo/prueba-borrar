@@ -1,0 +1,10 @@
+para crear las migraciones
+python manage.py makemigrations app
+para aplicar enpostgres
+python manage.py migrate
+
+correr seeder inicial
+python seed.py
+
+correr servidor
+python manage.py runserver
