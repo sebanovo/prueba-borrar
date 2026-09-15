@@ -9,7 +9,12 @@ from app.views.residencia_asignar import ResidenciaAsignacionViewSet
 from app.views.residente_usuario import ResidenteUsuarioViewSet
 from app.views.propietario_usuario import PropietarioUsuarioViewSet
 from app.views.propiedad_asignar import PropiedadAsignacionViewSet
-
+from app.views.propietario_usuario import PropietarioListView, PropietarioDetailUpdateView
+from app.views.apartamento import ApartamentoListView
+from app.views.residente_usuario import ResidenteListView
+from app.views.servicio import ServicioViewSet
+from app.views.cargo import CargoViewSet
+from app.views.pago import PagoViewSet
 
 
 urlpatterns = [
@@ -24,5 +29,12 @@ urlpatterns = [
     path("usuarios-residentes/", ResidenteUsuarioViewSet.as_view({'post': 'create'}), name="usuario-residente-create"),
     path("usuarios-propietarios/", PropietarioUsuarioViewSet.as_view({'post': 'create'}), name="usuario-propietario-create"),
     path("propiedades/asignar/", PropiedadAsignacionViewSet.as_view({'post': 'create'}), name="propiedad-asignar"),
+    path("propietarios/", PropietarioListView.as_view(), name="propietario-list"),
+    path("propietarios/<int:pk>/", PropietarioDetailUpdateView.as_view(), name="propietario-detail-update"),
+    path("apartamentos/list/", ApartamentoListView.as_view(), name="apartamento-list-view"),
+    path("residentes/list/", ResidenteListView.as_view(), name="residente-list-view"),
+    path("servicios/", ServicioViewSet.as_view({'get': 'list', 'post': 'create'}), name="servicio-list"),
+    path("cargos/", CargoViewSet.as_view({'get': 'list', 'post': 'create'}), name="cargo-list"),
+    path("pagos/", PagoViewSet.as_view({'get': 'list', 'post': 'create'}), name="pago-list"),
 
 ]
