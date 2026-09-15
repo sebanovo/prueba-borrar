@@ -52,3 +52,4 @@ class Pago(models.Model):
         if observacion: self.observacion = observacion
         self.save()
         self.cargo.aplicar_pago_aprobado()
+#cambios de taffy actualizados
