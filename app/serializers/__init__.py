@@ -15,4 +15,5 @@ __all__ = (
     'ApartamentoSerializer',
     'PropietarioSerializer',
     'ResidenciaAsignarSerializer',
-)   
+)  
+#Cambios aplicados#
