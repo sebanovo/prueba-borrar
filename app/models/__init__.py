@@ -2,3 +2,7 @@ from .usuario import *
 from .apartamento import *
 from .residencia import *
 from .propiedad import *
+from .cargo import *
+from .servicio import *
+from .cargo_servicio import *
+from .pago import *
