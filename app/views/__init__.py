@@ -5,4 +5,7 @@ from app.serializers import (
     UsuarioPropietarioCreateSerializer,
     ResidenciaSerializer,
     ResidenciaAsignarSerializer,
+    ReservaSerializer,
+    AreaComunSerializer,    
+    DetalleReservaCreateSerializer,
 )
