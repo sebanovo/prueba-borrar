@@ -15,7 +15,8 @@ from app.views.residente_usuario import ResidenteListView
 from app.views.servicio import ServicioViewSet
 from app.views.cargo import CargoViewSet
 from app.views.pago import PagoViewSet
-
+from app.views.vehiculo import VehiculoViewSet
+from app.views.visita import VisitaViewSet
 
 urlpatterns = [
 
@@ -36,5 +37,7 @@ urlpatterns = [
     path("servicios/", ServicioViewSet.as_view({'get': 'list', 'post': 'create'}), name="servicio-list"),
     path("cargos/", CargoViewSet.as_view({'get': 'list', 'post': 'create'}), name="cargo-list"),
     path("pagos/", PagoViewSet.as_view({'get': 'list', 'post': 'create'}), name="pago-list"),
-
+    path("vehiculos/", VehiculoViewSet.as_view({'get': 'list', 'post': 'create'}), name="vehiculo-list"),   
+    path("visitas/", VisitaViewSet.as_view({'get': 'list', 'post': 'create'}), name="visita-list"),
+    path("visitas/registrar/", VisitaViewSet.as_view({'post': 'registrar'}), name="visita-registrar"),
 ]

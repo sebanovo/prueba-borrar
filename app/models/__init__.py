@@ -6,3 +6,6 @@ from .cargo import *
 from .servicio import *
 from .cargo_servicio import *
 from .pago import *
+from .visitante import *
+from .vehiculo import *
+from .visita import *
