@@ -17,6 +17,11 @@ from app.views.cargo import CargoViewSet
 from app.views.pago import PagoViewSet
 from app.views.vehiculo import VehiculoViewSet
 from app.views.visita import VisitaViewSet
+from app.views.auth_me import MeView
+from app.views.usuario import UsuarioViewSet
+from app.views.reserva import ReservaViewSet
+from app.views.area_comun import AreaComunViewSet
+from app.views.detalle_reserva import DetalleReservaViewSet
 
 urlpatterns = [
 
@@ -40,4 +45,9 @@ urlpatterns = [
     path("vehiculos/", VehiculoViewSet.as_view({'get': 'list', 'post': 'create'}), name="vehiculo-list"),   
     path("visitas/", VisitaViewSet.as_view({'get': 'list', 'post': 'create'}), name="visita-list"),
     path("visitas/registrar/", VisitaViewSet.as_view({'post': 'registrar'}), name="visita-registrar"),
+    path("auth/me/", MeView.as_view(), name="auth-me"),
+    path("usuarios/", UsuarioViewSet.as_view({'get': 'list', 'post': 'create'}), name="usuario-list"),
+    path("reservas/", ReservaViewSet.as_view({'get': 'list', 'post': 'create'}), name="reserva-list"),
+    path("areas-comunes/", AreaComunViewSet.as_view({'get': 'list', 'post': 'create'}), name="areacomun-list"),
+    path("detalles-reserva/", DetalleReservaViewSet.as_view({'get': 'list', 'post': 'create'}), name="detalle-reserva-list"),
 ]
