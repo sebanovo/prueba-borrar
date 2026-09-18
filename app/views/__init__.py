@@ -5,4 +5,16 @@ from .residencia import *
 from .visita import *
 from .residente import *
 from .cargo import *
+from .pago import *
+from .apartamento import *
+from .propiedad_asignar import *
+from .residente_usuario import *
+from .propietario_usuario import *
+from .residencia_asignar import *
+from .servicio import *
+from .auth_me import *
+from .usuario import *
+from .reserva import *
+from .area_comun import *
+from .detalle_reserva import *
 
