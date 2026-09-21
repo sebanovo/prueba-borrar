@@ -53,3 +53,13 @@ IMPORTANTE PARA QUE NO SALGA ERROR AL MOMENTO DE DESASRROLLAR
 
 FROM django=DB IMPORT MODEL 
 >select interprete
+
+
+DB_NAME=condominio
+DB_USER=postgres
+DB_PASSWORD=(contraseña)
+DB_HOST=127.0.0.1
+DB_PORT=5432
+
+crear un archivo
+.env
