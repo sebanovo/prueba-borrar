@@ -1,7 +1,9 @@
+# app/models/pago.py
 from django.db import models
 from django.utils import timezone
-from app.models.cargo import Cargo
-from app.models.usuario import Usuario
+from django.conf import settings
+
+Usuario = settings.AUTH_USER_MODEL
 
 def upload_comprobante(instance, filename):
     return f"pagos/comprobantes/cargo_{instance.cargo_id}/{filename}"
@@ -12,12 +14,12 @@ class Pago(models.Model):
         EFECTIVO = "EFECTIVO", "Efectivo"
 
     class Estado(models.TextChoices):
-        PENDIENTE = "PENDIENTE", "Pendiente"   # espera verificación admin
+        PENDIENTE = "PENDIENTE", "Pendiente"
         APROBADO  = "APROBADO", "Aprobado"
         RECHAZADO = "RECHAZADO", "Rechazado"
 
-    cargo = models.ForeignKey(Cargo, on_delete=models.CASCADE, related_name="pagos")
-    tipo = models.CharField(max_length=10, choices=Tipo.choices)   # ← binario QR / EFECTIVO
+    cargo = models.ForeignKey('app.Cargo', on_delete=models.CASCADE, related_name="pagos")
+    tipo = models.CharField(max_length=10, choices=Tipo.choices)
     pagador = models.ForeignKey(Usuario, on_delete=models.PROTECT, related_name="pagos_realizados")
     monto = models.DecimalField(max_digits=10, decimal_places=2)
     comprobante = models.FileField(upload_to=upload_comprobante, blank=True, null=True)
@@ -41,7 +43,8 @@ class Pago(models.Model):
         self.estado = Pago.Estado.APROBADO
         self.verificado_por = admin_user
         self.fecha_verificacion = timezone.now()
-        if observacion: self.observacion = observacion
+        if observacion:
+            self.observacion = observacion
         self.save()
         self.cargo.aplicar_pago_aprobado()
 
@@ -49,7 +52,7 @@ class Pago(models.Model):
         self.estado = Pago.Estado.RECHAZADO
         self.verificado_por = admin_user
         self.fecha_verificacion = timezone.now()
-        if observacion: self.observacion = observacion
+        if observacion:
+            self.observacion = observacion
         self.save()
         self.cargo.aplicar_pago_aprobado()
-#cambios de taffy actualizados

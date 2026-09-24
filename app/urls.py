@@ -22,7 +22,7 @@ from app.views.usuario import UsuarioViewSet
 from app.views.reserva import ReservaViewSet
 from app.views.area_comun import AreaComunViewSet
 from app.views.detalle_reserva import DetalleReservaViewSet
-#from app.views.auth_me import me_view
+from app.views.pago import PagoViewSet
 
 urlpatterns = [
 
@@ -51,6 +51,17 @@ urlpatterns = [
     path("reservas/", ReservaViewSet.as_view({'get': 'list', 'post': 'create'}), name="reserva-list"),
     path("areas-comunes/", AreaComunViewSet.as_view({'get': 'list', 'post': 'create'}), name="areacomun-list"),
     path("detalles-reserva/", DetalleReservaViewSet.as_view({'get': 'list', 'post': 'create'}), name="detalle-reserva-list"),
-    
-    #path('auth/me/', me_view),
+    path("usuarios/<int:pk>/", UsuarioViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="usuarios-detail"),
+    path("visitas/<int:pk>/", VisitaViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="visitas-detail"),
+    path("visitas/<int:pk>/cerrar/", VisitaViewSet.as_view({"post": "cerrar"}), name="visitas-cerrar"),
+    path("vehiculos/<int:pk>/", VehiculoViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="vehiculos-detail"),
+    path("areas-comunes/<int:pk>/", AreaComunViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="areacomun-detail"),
+    path("reservas/<int:pk>/", ReservaViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="reservas-detail"),
+    path("detalles-reserva/<int:pk>/", DetalleReservaViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="detalles-reserva-detail"),
+    path("cargos/<int:pk>/", CargoViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="cargos-detail"),
+    path("pagos/<int:pk>/aprobar/", PagoViewSet.as_view({"post": "aprobar"}), name="pagos-aprobar"),
+    path("pagos/", PagoViewSet.as_view({'get': 'list', 'post': 'create'}), name="pago-list"),
+    path("pagos/<int:pk>/", PagoViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name="pago-detail"),
+    path("pagos/<int:pk>/aprobar/", PagoViewSet.as_view({"post": "aprobar"}), name="pago-aprobar"),
+    path("pagos/<int:pk>/rechazar/", PagoViewSet.as_view({"post": "rechazar"}), name="pago-rechazar"),
 ]
