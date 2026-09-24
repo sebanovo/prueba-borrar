@@ -1,14 +1,23 @@
 from rest_framework import serializers
 from app.models.usuario import Usuario
 
+
 class UsuarioCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True, required=True, min_length=6)
 
     class Meta:
         model = Usuario
         fields = [
-            "id", "email", "username", "ci", "rol", "nombre",
-            "telefono", "foto", "fecha_nacimiento", "password"
+            "id",
+            "email",
+            "username",
+            "ci",
+            "rol",
+            "nombre",
+            "telefono",
+            "foto",
+            "fecha_nacimiento",
+            "password",
         ]
         extra_kwargs = {
             "telefono": {"required": False, "allow_null": True, "allow_blank": True},
@@ -22,3 +31,11 @@ class UsuarioCreateSerializer(serializers.ModelSerializer):
         usuario.set_password(password)  # encripta la contraseña
         usuario.save()
         return usuario
+
+    # app/serializers/usuario.py
+
+
+class UsuarioProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Usuario
+        fields = ["id", "username", "email", "rol"]  # 👈 Incluye "rol"

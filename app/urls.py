@@ -22,6 +22,7 @@ from app.views.usuario import UsuarioViewSet
 from app.views.reserva import ReservaViewSet
 from app.views.area_comun import AreaComunViewSet
 from app.views.detalle_reserva import DetalleReservaViewSet
+#from app.views.auth_me import me_view
 
 urlpatterns = [
 
@@ -50,4 +51,6 @@ urlpatterns = [
     path("reservas/", ReservaViewSet.as_view({'get': 'list', 'post': 'create'}), name="reserva-list"),
     path("areas-comunes/", AreaComunViewSet.as_view({'get': 'list', 'post': 'create'}), name="areacomun-list"),
     path("detalles-reserva/", DetalleReservaViewSet.as_view({'get': 'list', 'post': 'create'}), name="detalle-reserva-list"),
+    
+    #path('auth/me/', me_view),
 ]
