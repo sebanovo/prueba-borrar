@@ -1,54 +1,59 @@
+# app/models/cargo.py
 from django.db import models
-from django.utils import timezone
+from django.conf import settings
 from app.models.apartamento import Apartamento
-from app.models.servicio import Servicio
+from django.db.models import Sum
+
+Usuario = settings.AUTH_USER_MODEL
 
 class Cargo(models.Model):
     class Estado(models.TextChoices):
         PENDIENTE = "PENDIENTE", "Pendiente"
-        PAGADO = "PAGADO", "Pagado"
-        VENCIDO = "VENCIDO", "Vencido"
+        PARCIAL   = "PARCIAL", "Parcialmente pagado"
+        PAGADO    = "PAGADO", "Pagado"
 
     apartamento = models.ForeignKey(Apartamento, on_delete=models.PROTECT, related_name="cargos")
-    # periodo de facturación (ajusta a tu preferencia)
-    periodo = models.DateField(default=timezone.now)  # usa el día 1 del mes o la fecha que manejes
+    periodo = models.DateField(help_text="Usa el primer día del mes, p. ej. 2025-09-01")
+    descripcion = models.CharField(max_length=255, blank=True, null=True)
+
+    total  = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    pagado = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+    saldo  = models.DecimalField(max_digits=12, decimal_places=2, default=0)
+
     estado = models.CharField(max_length=10, choices=Estado.choices, default=Estado.PENDIENTE)
-    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    pagado = models.DecimalField(max_digits=10, decimal_places=2, default=0)
-    fecha_vencimiento = models.DateField(blank=True, null=True)
-    notas = models.TextField(blank=True, null=True)
+    creado_por = models.ForeignKey(Usuario, null=True, blank=True, on_delete=models.SET_NULL, related_name="cargos_creados")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = "cargos"
-        ordering = ["-periodo", "apartamento__numero"]
+        ordering = ["-periodo", "-created_at"]
+        unique_together = [("apartamento", "periodo")]  # opcional
 
     def __str__(self):
-        return f"Cargo {self.id} - Apto {self.apartamento.numero} - {self.periodo}"
+        return f"Cargo {self.apartamento} {self.periodo:%Y-%m}"
 
+    # Se apoya en related_name="detalles" desde CargoServicio
     def recomputar_total(self):
-        total = sum(d.subtotal for d in self.detalles.all())
-        self.total = total
-        self.save(update_fields=["total"])
-        self._actualizar_estado()
+        agg = self.detalles.aggregate(s=Sum("subtotal"))
+        self.total = agg["s"] or 0
+        self.saldo = (self.total or 0) - (self.pagado or 0)
+        self._actualizar_estado_por_saldo()
+        self.save(update_fields=["total", "saldo", "estado"])
 
+    # Se apoya en related_name="pagos" desde Pago
     def aplicar_pago_aprobado(self):
-        """Suma pagos aprobados y actualiza estado."""
-        from app.models.pago import Pago  # import local para evitar ciclos
-        pagado = sum(p.monto for p in self.pagos.filter(estado=Pago.Estado.APROBADO))
-        self.pagado = pagado
-        self.save(update_fields=["pagado"])
-        self._actualizar_estado()
+        from django.db.models import Sum  # local para evitar ciclos
+        agg = self.pagos.filter(estado="APROBADO").aggregate(m=Sum("monto"))
+        self.pagado = agg["m"] or 0
+        self.saldo = (self.total or 0) - (self.pagado or 0)
+        self._actualizar_estado_por_saldo()
+        self.save(update_fields=["pagado", "saldo", "estado"])
 
-    def _actualizar_estado(self):
-        if self.pagado >= self.total and self.total > 0:
-            nuevo = Cargo.Estado.PAGADO
+    def _actualizar_estado_por_saldo(self):
+        if self.saldo <= 0:
+            self.estado = Cargo.Estado.PAGADO
+            self.saldo = 0
+        elif self.pagado > 0:
+            self.estado = Cargo.Estado.PARCIAL
         else:
-            if self.fecha_vencimiento and timezone.localdate() > self.fecha_vencimiento and self.total > 0:
-                nuevo = Cargo.Estado.VENCIDO
-            else:
-                nuevo = Cargo.Estado.PENDIENTE
-
-        if nuevo != self.estado:
-            self.estado = nuevo
-            self.save(update_fields=["estado"])
+            self.estado = Cargo.Estado.PENDIENTE
