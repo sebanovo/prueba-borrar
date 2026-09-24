@@ -50,4 +50,7 @@ urlpatterns = [
     path("reservas/", ReservaViewSet.as_view({'get': 'list', 'post': 'create'}), name="reserva-list"),
     path("areas-comunes/", AreaComunViewSet.as_view({'get': 'list', 'post': 'create'}), name="areacomun-list"),
     path("detalles-reserva/", DetalleReservaViewSet.as_view({'get': 'list', 'post': 'create'}), name="detalle-reserva-list"),
+    path("usuarios/<int:pk>/", UsuarioViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="usuarios-detail"),
+    path("visitas/<int:pk>/", VisitaViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="visitas-detail"),
+    path( "visitas/<int:pk>/cerrar/", VisitaViewSet.as_view({"post": "cerrar"}), name="visitas-cerrar" ), 
 ]

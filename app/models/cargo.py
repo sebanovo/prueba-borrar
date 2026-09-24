@@ -42,9 +42,13 @@ class Cargo(models.Model):
 
     def _actualizar_estado(self):
         if self.pagado >= self.total and self.total > 0:
-            self.estado = Cargo.Estado.PAGADO
-        elif 0 < self.pagado < self.total:
-            self.estado = Cargo.Estado.PARCIAL
+            nuevo = Cargo.Estado.PAGADO
         else:
-            self.estado = Cargo.Estado.PENDIENTE
-        self.save(update_fields=["estado"])
+            if self.fecha_vencimiento and timezone.localdate() > self.fecha_vencimiento and self.total > 0:
+                nuevo = Cargo.Estado.VENCIDO
+            else:
+                nuevo = Cargo.Estado.PENDIENTE
+
+        if nuevo != self.estado:
+            self.estado = nuevo
+            self.save(update_fields=["estado"])
