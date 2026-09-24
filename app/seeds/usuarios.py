@@ -13,5 +13,6 @@ def run():
         print("✅ Usuario admin creado")
     else:
         print("⚠️ Usuario admin ya existe")
-
+        
+        ## borre usuarios
 
