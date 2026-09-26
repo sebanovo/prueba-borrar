@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "app",
     "rest_framework",
+    "corsheaders",
 ]
 
 REST_FRAMEWORK = {
@@ -53,12 +54,14 @@ REST_FRAMEWORK = {
     )
 }
 
+
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",), 
 }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -67,6 +70,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
 ROOT_URLCONF = 'app.config.urls'
 
 TEMPLATES = [

@@ -23,6 +23,13 @@ from app.views.reserva import ReservaViewSet
 from app.views.area_comun import AreaComunViewSet
 from app.views.detalle_reserva import DetalleReservaViewSet
 from app.views.pago import PagoViewSet
+from app.views.acceso import (
+    PuntoAccesoViewSet, CamaraViewSet,
+    ReconocimientoViewSet, IntentoAccesoViewSet,
+    EntradaSalidaViewSet
+)
+from app.views.reconocimiento_ia import ReconocerIAView
+
 
 urlpatterns = [
 
@@ -64,4 +71,17 @@ urlpatterns = [
     path("pagos/<int:pk>/", PagoViewSet.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}), name="pago-detail"),
     path("pagos/<int:pk>/aprobar/", PagoViewSet.as_view({"post": "aprobar"}), name="pago-aprobar"),
     path("pagos/<int:pk>/rechazar/", PagoViewSet.as_view({"post": "rechazar"}), name="pago-rechazar"),
+    #url de la camara
+    path("puntos-acceso/", PuntoAccesoViewSet.as_view({"get": "list", "post": "create"}), name="puntosacceso-list"),
+    path("puntos-acceso/<int:pk>/", PuntoAccesoViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="puntosacceso-detail"),
+    path("camaras/", CamaraViewSet.as_view({"get": "list", "post": "create"}), name="camara-list"),
+    path("camaras/<int:pk>/", CamaraViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="camara-detail"),
+    path("reconocimientos/", ReconocimientoViewSet.as_view({"get": "list", "post": "create"}), name="reconocimiento-list"),
+    path("reconocimientos/<int:pk>/", ReconocimientoViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="reconocimiento-detail"),
+    path("reconocimientos/procesar/", ReconocimientoViewSet.as_view({"post": "procesar"}), name="reconocimiento-procesar"),
+    path("intentos/", IntentoAccesoViewSet.as_view({"get": "list", "post": "create"}), name="intento-list"),
+    path("intentos/<int:pk>/", IntentoAccesoViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="intento-detail"),
+    path("entradas-salidas/", EntradaSalidaViewSet.as_view({"get": "list", "post": "create"}), name="entradasalida-list"),
+    path("entradas-salidas/<int:pk>/", EntradaSalidaViewSet.as_view({"get": "retrieve", "put": "update", "patch": "partial_update", "delete": "destroy"}), name="entradasalida-detail"),
+    path("reconocer-ia/", ReconocerIAView.as_view(), name="reconocer-ia"),
 ]

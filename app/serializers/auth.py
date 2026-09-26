@@ -11,7 +11,6 @@ class EmailOrUsernameTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):
         token = super().get_token(user)
-        token["email"] = user.email
-        token["rol"] = getattr(user, "rol", None)
-        token["name"] = f"{user.first_name} {user.last_name}".strip()
+        # Solo guardamos el rol en el payload
+        token["rol"] = user.rol
         return token
