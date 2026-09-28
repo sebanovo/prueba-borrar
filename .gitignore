@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 .env
 .venv/
 __pycache__/
 *.pyc
+=======
+.venv/
+venv/
+__pycache__/
+*.pyc
+.env
+>>>>>>> riv/develop

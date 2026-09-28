@@ -31,7 +31,11 @@ SECRET_KEY = 'django-insecure-w7at5urp7r4z5d+jy5-ki^ra=%tivuwpb^&3=wne_46=$!7lk1
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+<<<<<<< HEAD
 ALLOWED_HOSTS = []
+=======
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '10.0.2.2']
+>>>>>>> riv/develop
 
 
 # Application definition
@@ -45,6 +49,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "app",
     "rest_framework",
+<<<<<<< HEAD
+=======
+    "corsheaders",
+>>>>>>> riv/develop
 ]
 
 REST_FRAMEWORK = {
@@ -53,12 +61,20 @@ REST_FRAMEWORK = {
     )
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> riv/develop
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("Bearer",), 
 }
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+<<<<<<< HEAD
+=======
+    'corsheaders.middleware.CorsMiddleware',
+>>>>>>> riv/develop
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -67,6 +83,16 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+<<<<<<< HEAD
+=======
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  
+]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+]
+>>>>>>> riv/develop
 ROOT_URLCONF = 'app.config.urls'
 
 TEMPLATES = [
@@ -155,3 +181,18 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "media"
+<<<<<<< HEAD
+=======
+
+
+####################
+#por ver para el formato de hora
+# Django (formularios/admin)
+#TIME_INPUT_FORMATS = ["%H:%M"]
+
+# DRF (serialización)
+#REST_FRAMEWORK = {
+    # ...
+ #   "TIME_FORMAT": "%H:%M",
+#}
+>>>>>>> riv/develop
